@@ -95,7 +95,7 @@ class StreamViewer:
         """
         try:
             # Detailed Google Maps Static API URL with your API key
-            map_url = f"https://maps.googleapis.com/maps/api/staticmap?center={lat},{lon}&zoom=15&size=640x480&maptype=roadmap&markers=color:red%7C{lat},{lon}&key=AIzaSyBhDN-_mDpb3k3ZaECxnB1bQPCD2vEemR4"
+            map_url = f"https://maps.googleapis.com/maps/api/staticmap?center={lat},{lon}&zoom=15&size=640x480&maptype=roadmap&markers=color:red%7C{lat},{lon}&key=AIzaSyBhDN-_mDpb3k3ZaECxnB1bQPCD2vEemR4" #<-- this is our API KEY at key= ""
             
             print(f"Attempting to fetch map from URL: {map_url}")
             

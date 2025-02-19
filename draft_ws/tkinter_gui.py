@@ -7,7 +7,6 @@ import numpy as np
 import threading
 import queue
 import subprocess
-import asyncio
 import sys
 import os
 
@@ -17,6 +16,9 @@ class StreamViewer:
     def __init__(self, root):
         self.root = root
         self.root.title("ASTRA DEMO")
+        
+        # Get the directory where tkinter_gui.py is located
+        self.script_dir = os.path.dirname(os.path.abspath(__file__))
         
         # Create main frame
         main_frame = ttk.Frame(root)
@@ -67,40 +69,34 @@ class StreamViewer:
         self.update_frame()
 
     def start_output_monitoring(self):
-        script_path = os.path.join(os.getcwd(), 'test_script.py')
-        print(f"Starting script: {script_path}")
+        script_path = os.path.join(self.script_dir, 'tkinter_script.py')
         
-        # Start the process with a non-blocking pipe
-        self.process = subprocess.Popen(
-            [sys.executable, script_path],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            bufsize=1,
-            universal_newlines=True
-        )
-        
-        # Improved output reading function
-        def read_output():
-            while self.running and self.process.poll() is None:  # Check if process is still running
-                # Read a single line without blocking
-                line = self.process.stdout.readline()
-                if line:
-                    self.root.after(0, self.append_to_terminal, line)
-                
-                # Check for errors
-                error = self.process.stderr.readline()
-                if error:
-                    self.root.after(0, self.append_to_terminal, f"ERROR: {error}")
-        
-        # Start reading in a separate thread
-        self.output_thread = threading.Thread(target=read_output)
-        self.output_thread.daemon = True
-        self.output_thread.start()  
-
-    def append_to_terminal(self, text):
-        self.terminal.insert(tk.END, text)
-        self.terminal.see(tk.END)
+        try:
+            # Create process with unbuffered output
+            self.process = subprocess.Popen(
+                [sys.executable, "-u", script_path],  # Use -u to disable output buffering
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                bufsize=1,
+                universal_newlines=True
+            )
+            
+            def read_output():
+                for line in iter(self.process.stdout.readline, ''):
+                    if line:
+                        # Schedule the update in the main thread
+                        self.root.after(0, lambda l=line: self.terminal.insert(tk.END, l))
+                        self.root.after(0, self.terminal.see, tk.END)
+                self.process.stdout.close()
+            
+            # Start output monitoring in a separate thread
+            self.output_thread = threading.Thread(target=read_output)
+            self.output_thread.daemon = True
+            self.output_thread.start()
+            
+        except Exception as e:
+            self.terminal.insert(tk.END, f"Error starting script: {str(e)}\n")
+            self.terminal.see(tk.END)
 
     def clear_terminal(self):
         self.terminal.delete(1.0, tk.END)
@@ -149,7 +145,8 @@ class StreamViewer:
             print(f"Display error: {str(e)}")
             self.status_label.config(text=f"Error: {str(e)}", fg="red")
         
-        self.root.after(10, self.update_frame)
+        if self.running:
+            self.root.after(10, self.update_frame)
 
     def on_closing(self):
         self.running = False

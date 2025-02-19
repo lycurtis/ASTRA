@@ -3,7 +3,7 @@ import cv2
 
 app = Flask(__name__)
 
-camera = cv2.VideoCapture(1)  # eventually change 1 to our luxonis url. 1 is for macbook cam
+camera = cv2.VideoCapture(0)  # eventually change 1 to our luxonis url. 1 is for macbook cam
 
 def generate_frames():
     while True:

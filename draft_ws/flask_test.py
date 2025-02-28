@@ -1,4 +1,7 @@
-#Human Detection with Flask upload
+"""
+Code Description: Human Detection with Flask upload
+"""
+
 #!/usr/bin/env python3
 
 from pathlib import Path

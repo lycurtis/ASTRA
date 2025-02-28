@@ -1,3 +1,6 @@
+"""
+Code Description: Raw Human Detection (Nothing else)
+"""
 #!/usr/bin/env python3
 
 #Raw Human Detection with Camera

@@ -1,6 +1,8 @@
 """
 Code Description: This is a launch script that will run all necessary UAV scripts
 """
+
+"""
 #Non-headless
 import subprocess
 
@@ -13,15 +15,20 @@ commands = [
 # Launch scripts in separate terminal tabs
 for command in commands:
     subprocess.Popen(command, shell=True)
-
 """
-#Without terminal (Runs in background)
+
+#Completely heaadless
 import subprocess
 
-scripts = [
-    "/home/uav/depthai-python/examples/Yolo/human_detect.py",
-    "/home/uav/astra/src/sos_transmitter.py"
+# Commands to launch scripts in the background
+commands = [
+    "python3 /home/uav/depthai-python/examples/Yolo/human_detect.py",
+    "python3 /home/uav/astra/src/sos_transmitter.py"
 ]
 
-processes = [subprocess.Popen(["python3", script]) for script in scripts]
-"""
+# Launch scripts as independent background processes
+processes = [subprocess.Popen(cmd, shell=True) for cmd in commands]
+
+# Keep the main script running
+for process in processes:
+    process.wait()

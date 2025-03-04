@@ -11,7 +11,7 @@ import sys
 import os
 
 # Video stream URL
-#URL = "http://192.168.1.139:5000/video_feed"
+#URL = "http://192.168.1.179:5000/video_feed"
 URL = "http://192.168.8.219:5000/video_feed"
 
 class StreamViewer:
@@ -130,31 +130,42 @@ class StreamViewer:
             self.terminal.insert(tk.END, f"Default map not found: {map_path}\n")
             self.terminal.see(tk.END)
 
-    def start_output_monitoring(self): #Runs 'test_receiver.py' and extracts GPS coordinates from its output.
+    def start_output_monitoring(self):
+        #Runs receiver and extracts GPS coordinates from its output.
         script_path = os.path.join(self.script_dir, 'test_receiver.py')
-        # Start the script process
-        self.process = subprocess.Popen(
-            [sys.executable, "-u", script_path],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            bufsize=1,
-            universal_newlines=True
-            )
-        def read_output():
-            for line in iter(self.process.stdout.readline, ''):
-                if line:
-                    self.root.after(0, lambda l=line: self.terminal.insert(tk.END, l))
-                    self.root.after(0, self.terminal.see, tk.END)
-                    # Extract GPS coordinates if they are printed
-                    if "Coordinate:" in line:
-                        coord_str = line.split("Coordinate:")[1].strip()
-                        lat, lon = map(float, coord_str.split(','))
-                        self.coordinates_received = True 
-                        self.root.after(0, self.update_coordinate_display, lat, lon)
 
-                        # Start terminal output monitoring
-                        self.output_thread = threading.Thread(target=read_output, daemon=True)
-                        self.output_thread.start()
+        try:
+            # Start the script process
+            self.process = subprocess.Popen(
+                [sys.executable, "-u", script_path],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                bufsize=1,
+                universal_newlines=True
+            )
+
+            def read_output():
+                for line in iter(self.process.stdout.readline, ''):
+                    if line:
+                        self.root.after(0, lambda l=line: self.terminal.insert(tk.END, l))
+                        self.root.after(0, self.terminal.see, tk.END)
+
+                        # Extract GPS coordinates if they are printed
+                        if "Coordinate:" in line:
+                            try:
+                                coord_str = line.split("Coordinate:")[1].strip()
+                                lat, lon = map(float, coord_str.split(','))
+                                self.root.after(0, self.update_coordinate_display, lat, lon)
+                            except Exception as e:
+                                self.root.after(0, lambda: self.terminal.insert(tk.END, f"Error parsing coordinates: {e}\n"))
+
+            self.output_thread = threading.Thread(target=read_output, daemon=True)
+            self.output_thread.start()
+
+        except Exception as e:
+            self.terminal.insert(tk.END, f"Error starting script: {str(e)}\n")
+            self.terminal.see(tk.END)
+
 
     def update_coordinate_display(self, lat, lon):
         #Updates coordinate display and loads the appropriate map based on selection.
@@ -179,7 +190,7 @@ class StreamViewer:
         # Define coordinate ranges for different maps
         map_files = {
             "UCR.png": (33.9737, -117.3281), 
-            "box_springs.png": (33.9570, -117.2727)
+            "box_springs.png": (34.0010, -117.2898)
         }
 
         # Default map

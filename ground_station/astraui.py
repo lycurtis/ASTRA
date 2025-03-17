@@ -72,7 +72,7 @@ class StreamViewer:
         self.current_lat = None
         self.current_lon = None
         
-        self.maps_api_key = "AIzaSyBhDN-_mDpb3k3ZaECxnB1bQPCD2vEemR4"  #<-- API KEY remove when adding to Github
+        self.maps_api_key = ""  #<-- API KEY remove when adding to Github
         
         # Start video stream
         self.video_thread = threading.Thread(target=self.stream_reader)

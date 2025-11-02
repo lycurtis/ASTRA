@@ -7,9 +7,8 @@ An open-source UAV platform for search-and-rescue (SAR) that combines real-time 
 - [What is ASTRA](#what-is-astra?)
 - [Core Capabilities](#core-capabilities) 
 - [System Architecture (High Level)](#system-architecture-(high-level))
-- [Key specs & design targets](#)
-- [Demos](#heading-title)
-- [Repository layout](#heading-title)
+- [Key Specs & Design Targets](#key-specs-&-design-targets)
+- [Demos](#demos)
 - [Getting started](#heading-title)
 - [How it works (data flow)](#heading-title)
 - [Hardware bill of materials](#heading-title)
@@ -37,4 +36,17 @@ ASTRA is split into UAV and Ground station subsystems:
 - GPS --> Jetson (Processing + CV) --> UDP --> UI
 - RF telemetry is maintained in parallel
 - I2C/USB/UART form the internal peripheral backbone, and UDP carries time-sensitive events
+
+## Key Specs & Design Targets
+- **Flight Path**: Waypoint navigation, 9-10 ft altitude, 5 mph parameter set
+- **Range (control/telemetry):** ~427 ft effective radius (validated)
+- **Vision performance:** 20-25 FPS camera output; <= 800 ms end-to-end latency target
+- **Detection Range:** ~50 m (person)
+- **Power/Weight:** 4S 3300 mAh LiPo; total takeoff weight ~2.5 kg (5.5 lb)
+- **Alert cadence:** 2 Hz SOS updates on detection
+
+## Demos
+Project clips:
+- Flight & platform overview: https://youtu.be/dsUHsBSHA0g
+- Ground-station & detections: https://youtu.be/vNRCC04JXCo
 

@@ -24,10 +24,10 @@ An open-source UAV platform for search-and-rescue (SAR) that combines real-time 
 ASTRA is a semi-autonomous quadrotor designed to improve SAR operations. It flies in versatile environments, detect humans on-board using AI, and relays detections + GPS coordinates to a ground station UI for immediate response. ASTRA is the better alternative as it is a targeted, low-cost research platform that bridges manual piloting and intelligent rescue tooling.
 
 ## Core Capabilities 
-- '''On-board computer vision (YOLOv8):''' Real-time human detection (single class: person) driven by NVIDIA Jetson Orin Nano + Luxonis OAK-D-Lite depth camera.
-- '''Waypoint/simulated autonomy:''' Routes planned in QGroundControl (Pixhawk 4/PX4 Firmware).
-- '''Live communication:''' Detections and telemetry to the ground station over UDP/Wi-Fi; MavLink telemetry maintained over RF
-- '''Ground-station UI:''' Camera feed, Google Maps GPS view (online) with Offline Mode feedback map when there's no internet
+- `On-board computer vision (YOLOv8):` Real-time human detection (single class: person) driven by NVIDIA Jetson Orin Nano + Luxonis OAK-D-Lite depth camera.
+- `Waypoint/simulated autonomy:` Routes planned in QGroundControl (Pixhawk 4/PX4 Firmware).
+- `Live communication:` Detections and telemetry to the ground station over UDP/Wi-Fi; MavLink telemetry maintained over RF
+- `Ground-station UI:` Camera feed, Google Maps GPS view (online) with Offline Mode feedback map when there's no internet
 
 ## System Architecture (High Level)
 ASTRA is split into UAV and Ground station subsystems:

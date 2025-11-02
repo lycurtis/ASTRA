@@ -1,0 +1,8 @@
+# Turn off Linguist’s auto-exclusions
+* linguist-vendored=false
+* linguist-generated=false
+* linguist-detectable=true
+
+# Help it see Python if files lack .py
+*.py linguist-language=Python
+scripts/* linguist-language=Python

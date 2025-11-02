@@ -11,6 +11,7 @@ An open-source UAV platform for search-and-rescue (SAR) that combines real-time 
 - [Demos](#demos)
 - [How It Works (Data Flow)](#how-it-works-data-flow)
 - [Testing Highlights](#testing-highlights)
+- [Team](#team)
 
 ## What is ASTRA?
 ASTRA is a semi-autonomous quadrotor designed to improve SAR operations. It flies in versatile environments, detect humans on-board using AI, and relays detections + GPS coordinates to a ground station UI for immediate response. ASTRA is the better alternative as it is a targeted, low-cost research platform that bridges manual piloting and intelligent rescue tooling.
@@ -55,3 +56,13 @@ Project clips:
 - **Latency & video:** Bounded queue eliminated stale frames and reduced perceived lag in the UI
 - **EMI mitigation:** Camera + USB 3.0 near GPS caused lock loss; shielding, grounding, cable reroute, and ferrites restored stable lock
 - **Prop selection:** 1147 props chosen for best balance of lift/stability vs. 1045/1245
+
+## Team
+### Benjamin Kim
+Main: Computer Vision (YOLOv8), PersonID
+
+### Curtis Ly
+Main: Hardware, System Architect 
+
+### Pryce Matsudaira
+Main: User Interface, PersonID  

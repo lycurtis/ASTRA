@@ -33,8 +33,8 @@ ASTRA is a semi-autonomous quadrotor designed to improve SAR operations. It flie
 ASTRA is split into UAV and Ground station subsystems:
 - **UAV:** Pixhawk 4 (flight), M10 GPS, OAK-D-LITE
 - **Ground Station:** Python/Tkinter UI showing detections, map, and terminal telemetry; live stream via Flask
-### Summary
-GPS --> Jetson (Processing + CV) --> UDP --> UI
-RF telemetry is maintained in parallel
-I2C/USB/UART form the internal peripheral backbone, and UDP carries time-sensitive events
+### Highlight
+- GPS --> Jetson (Processing + CV) --> UDP --> UI
+- RF telemetry is maintained in parallel
+- I2C/USB/UART form the internal peripheral backbone, and UDP carries time-sensitive events
 

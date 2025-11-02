@@ -6,7 +6,7 @@ An open-source UAV platform for search-and-rescue (SAR) that combines real-time 
 ## Table of contents
 - [What is ASTRA](#what-is-astra)
 - [Core Capabilities](#core-capabilities) 
-- [System Architecture (High Level)](#system-architecture-(high-level))
+- [System Architecture (High Level)](#system-architecture-high-level)
 - [Key Specs & Design Targets](#key-specs-&-design-targets)
 - [Demos](#demos)
 - [Getting started](#heading-title)

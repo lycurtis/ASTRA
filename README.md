@@ -9,15 +9,8 @@ An open-source UAV platform for search-and-rescue (SAR) that combines real-time 
 - [System Architecture (High Level)](#system-architecture-high-level)
 - [Key Specs & Design Targets](#key-specs--design-targets)
 - [Demos](#demos)
-- [Getting started](#heading-title)
-- [How it works (data flow)](#heading-title)
-- [Hardware bill of materials](#heading-title)
-- [Testing highlights](#heading-title)
-- [Roadmap](#heading-title)
-- [Safety notes](#heading-title)
-- [Team](#heading-title)
-- [Acknowledgements](#heading-title)
-
+- [How It Works (Data Flow)](#how-it-works-data-flow)
+- [Testing Highlights](#testing-highlights)
 
 ## What is ASTRA?
 ASTRA is a semi-autonomous quadrotor designed to improve SAR operations. It flies in versatile environments, detect humans on-board using AI, and relays detections + GPS coordinates to a ground station UI for immediate response. ASTRA is the better alternative as it is a targeted, low-cost research platform that bridges manual piloting and intelligent rescue tooling.
@@ -50,3 +43,15 @@ Project clips:
 - Flight & platform overview: https://youtu.be/dsUHsBSHA0g
 - Ground-station & detections: https://youtu.be/vNRCC04JXCo
 
+## How It Works (Data Flow)
+1. `astra.py` boots the pipeline on the Jetson
+2. `human_detect.py` processes OAK-D-Lite frames w/ YOLOv8 and logs `DETECTED`/`NOT_DETECTED`
+3. `sos_transmitter.py` tails the log and transmits detection state via UDP to the ground station at the configured IP:5005 (de-duped on state change)
+4. `astraui.py` from the ground station receives UDP, renders camera, map, and terminal; includes an **Offline Mode** map when the internet is unavailable
+
+## Testing Highlights
+- **RF control range:** Stable up to ~427 ft (two environments)
+- **UDP comms:** Transmitter and receiver validated; terminal shows “PERSON DETECTED” / “Searching for persons…” on packets
+- **Latency & video:** Bounded queue eliminated stale frames and reduced perceived lag in the UI
+- **EMI mitigation:** Camera + USB 3.0 near GPS caused lock loss; shielding, grounding, cable reroute, and ferrites restored stable lock
+- **Prop selection:** 1147 props chosen for best balance of lift/stability vs. 1045/1245

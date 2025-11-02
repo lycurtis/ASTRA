@@ -1,1 +1,1 @@
-Author: Curtis Ly
+Contributors: Curtis Ly, Pryce Matsudaira, Benjamin Kim

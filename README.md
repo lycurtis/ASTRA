@@ -2,6 +2,7 @@
 An open-source UAV platform for search-and-rescue (SAR) that combines real-time human detection, waypoint navigation, and ground-station visualization
 
 ![1744755671148](https://github.com/user-attachments/assets/ddf777fc-4f2d-4563-b751-98230e194a4a)
+![ASTRA](ASTRA.PNG)
 
 ## Table of contents
 - [What is ASTRA](#what-is-astra)

@@ -20,7 +20,7 @@ if not Path(nnPath).exists():
 # YOLOv8 Label Map
 labelMap = ["person"]
 
-syncNN = True
+syncNN = True # Pull RGB + NN results in lockstep
 
 # Create pipeline
 pipeline = dai.Pipeline()
@@ -39,16 +39,16 @@ camRgb.setPreviewSize(640, 352)
 camRgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_1080_P)
 camRgb.setInterleaved(False)
 camRgb.setColorOrder(dai.ColorCameraProperties.ColorOrder.BGR)
-camRgb.setFps(40)
+camRgb.setFps(30)
 
 # YOLOv8 Network Settings
-detectionNetwork.setConfidenceThreshold(0.5)
+detectionNetwork.setConfidenceThreshold(0.5) # filter out low confidence preds (< 0.5) and overly overlapping boxes (IoU > 0.5 suppressed)
 detectionNetwork.setNumClasses(1)
-detectionNetwork.setCoordinateSize(4)
+detectionNetwork.setCoordinateSize(4) # 4 coords per box (x,y,w,h or xmin,ymin,xmax,ymax depending on the parser baked into the blob)
 detectionNetwork.setIouThreshold(0.5)
-detectionNetwork.setBlobPath(nnPath)
+detectionNetwork.setBlobPath(nnPath) # points the network node at your compiled model
 detectionNetwork.setNumInferenceThreads(2)
-detectionNetwork.input.setBlocking(False)
+detectionNetwork.input.setBlocking(False) # Non-blocking input: avoids backpressure if the host is slow.
 
 # Linking
 camRgb.preview.link(detectionNetwork.input)
@@ -58,6 +58,7 @@ detectionNetwork.out.link(nnOut.input)
 # Log file for detections
 LOG_FILE = "/tmp/human_detect_log.txt"
 
+# Simple writer that overwrites the file with the latest state (not an append log). Always have the current status in /tmp/human_detect_log.txt
 def write_to_log(message):
     """Write detection result to log file"""
     with open(LOG_FILE, "w") as f:
@@ -72,7 +73,7 @@ with dai.Device(pipeline) as device:
     frame = None
     detections = []
     startTime = time.monotonic()
-    counter = 0
+    counter = 0 # counter will count NN packets (used to estimate NN FPS)
     color2 = (255, 255, 255)
 
     last_logged_message = None  # Prevents redundant log writes

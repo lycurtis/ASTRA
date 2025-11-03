@@ -1,1 +1,1 @@
-## Lead Contributors: Curtis Ly
+## Lead Contributors: Curtis Ly, Pryce Matsudaira, Benjamin Kim
